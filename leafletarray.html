@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Gedung UGM</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+        
+        <!-- Make sure you put this AFTER Leaflet's CSS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="">
+        </script>
+        <style>
+            #map {
+            width: 100%;
+            height: 450px;
+        }
+        body {
+    background-color: rgba(247, 230, 195, 0.553);}
+
+        </style>
+    </head>
+    <body>
+        <h2>Persebaran Gedung & Fakultas Universitas Gadjah Mada</h2>
+        <p>Oleh: Maureen Arsa Sanda Cantika</p>
+        <div id="map"></div>
+    
+        <script>
+            var map = L.map('map').setView([-7.795570646526388, 110.36984160435036], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+
+            // MENDEFINISIKAN ICON
+            var iconCoordinates = [
+                { lat: -7.767452314757018, lon: 110.37850430761851, name: "Balairung UGM" },
+                { lat: -7.774762414421428, lon: 110.37448712418889, name: "Sekolah Vokasi UGM" },
+                { lat: -7.769452196355992, lon: 110.3740469657647, name: "FKKMK UGM" },
+                { lat: -7.766987976530037, lon: 110.37614763244561, name: "FMIPA UGM" },
+                { lat: -7.765164455207029, lon: 110.37253399290564, name: "FTEKNIK UGM" },
+                { lat: -7.770424665505187, lon: 110.37895747158812, name: "FEB UGM" },
+                { lat: -7.771196444834537, lon: 110.378859824368, name: "FIB UGM" },
+                { lat: -7.771423910414253, lon: 110.38078685507816, name: "FILSAFAT UGM" },
+                { lat: -7.768834576257027, lon: 110.38093689545215, name: "FAPERTA UGM" },
+                { lat: -7.766913422196022, lon: 110.38062255705287, name: "KEHUTANAN UGM" },
+                { lat: -7.769291114979248, lon: 110.3801943499789, name: "FISIPOL UGM" },
+                { lat: -7.767229941089145, lon: 110.38505238432883, name: "FKH UGM" },
+                { lat: -7.768666812718402, lon: 110.37710919949666, name: "FARMASI UGM" },
+                { lat: -7.772191398664616, lon: 110.3800335941252, name: "PSIKOLOGI UGM" },
+                { lat: -7.767459864504791, lon: 110.38575834827184, name: "FAPET UGM" },
+                { lat: -7.765254167963439, lon: 110.37666919746266, name: "BIOLOGI UGM" },
+                { lat: -7.768530176002877, lon: 110.38071089597365, name: "FTP UGM" },
+                { lat: -7.765940553173142, lon: 110.3776537959736, name: "GEOGRAFI UGM" },
+                { lat: -7.763536873859816, lon: 110.37558944994741, name: "Sekolah Pascasarjana UGM" },
+                {lat: -7.770517655229055, lon: 110.37776172426172, name: "GSP UGM" },
+                {lat: -7.76905750154257, lon: 110.37820390022408, name: "Perpustkaan UGM" },
+                {lat: -7.770285790031546, lon: 110.3820634564936, name: "Wisdom Park UGM" },
+                {lat: -7.773347521455747, lon: 110.38006515734234, name: "Masjid Kampus UGM" },
+                {lat: -7.77391300589955, lon: 110.37792854775391, name: "Museum UGM" },
+                {lat: -7.771962668069796, lon: 110.3821284397751, name: "GOR Lembah UGM" },
+                {lat: -7.769218273008598, lon: 110.3847721337387, name: "Stadion Pancasila UGM" },
+                {lat: -7.770383876437504, lon: 110.38118125485035, name: "HUKUM UGM" },
+                {lat: -7.771601382967531, lon: 110.3815420094955, name: "PUJALE UGM" },
+                {lat: -7.773772473699643, lon: 110.37251758578472, name: "TILC UGM" },
+                {lat: -7.765380468719846, lon: 110.3722519633557, name: "SGLC UGM" },
+        ];
+
+        iconCoordinates.forEach(function (coordinate) {
+            var fakultasIcon = L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/128/1183/1183390.png', // Ganti dengan path ke gambar ikon Anda
+                iconSize: [35, 35], // Sesuaikan dengan ukuran ikon Anda
+                iconAnchor: [16, 35], // Sesuaikan dengan posisi anchor ikon
+            });
+
+            //MENDEFINISIKAN LETAK MARKER DAN POP UP
+            var marker = L.marker(coordinate, { icon: fakultasIcon }).addTo(map);
+            marker.bindPopup("<b>Gedung</b><br>" + coordinate.name).openPopup();
+        });
+
+            var circle = L.circle([-7.76961476802158, 110.37973983063289], {
+                color: 'blue',
+                fillColor: '#AFCBFF',
+                fillOpacity: 0.5,
+                radius: 20
+            }).addTo(map);
+
+            var polygon = L.polygon([
+                [-7.7707736750223795, 110.37703216423587],
+                [-7.771144012065149, 110.37833455376968],
+                [-7.772211316995391, 110.37804668155754],
+                [-7.77184822960501, 110.3767064513897],
+            ]).addTo(map);
+            circle.bindPopup("Taman FISIPOL");
+            polygon.bindPopup("Lapangan Pancasila");
+            var popup = L.popup()
+            .setLatLng([-7.775979805846406, 110.37606546952577])
+            .setContent("Universitas Gadjah Mada (UGM)")
+            .openOn(map);
+
+            function onMapClick(e) {
+                alert("You clicked the map at " + e.latlng);
+            }
+            
+            map.on('click', onMapClick);
+        </script>
+        
+        
+    <h4>Keterangan:</h4>
+    <table border="1">
+    <tr>
+        <th>No.</th>
+        <th>Nama-Nama Gedung & Fakultas UGM</th>
+    </tr>
+    <tr>
+        <td>1.</td>
+        <td>Balairung</td>
+    </tr>
+    <tr>
+        <td>2.</td>
+        <td>Sekolah Vokasi</td>
+    </tr>
+    <tr>
+        <td>3.</td>
+        <td>FKKMK</td>
+    </tr>
+    <tr>
+        <td>4.</td>
+        <td>FMIPA</td>
+    </tr>
+    <tr>
+        <td>5.</td>
+        <td>FTEKNIK</td>
+    </tr>
+    <tr>
+        <td>6.</td>
+        <td>FEB</td>
+    </tr>
+    <tr>
+        <td>7.</td>
+        <td>FIB</td>
+    </tr>
+    <tr>
+        <td>8.</td>
+        <td>FILSAFAT</td>
+    </tr>
+    <tr>
+        <td>9.</td>
+        <td>FAPERTA</td>
+    </tr>
+    <tr>
+        <td>10.</td>
+        <td>KEHUTANAN</td>
+    </tr>
+    <tr>
+        <td>11.</td>
+        <td>FISIPOL</td>
+    </tr>
+    <tr>
+        <td>12.</td>
+        <td>FKH</td>
+    </tr>
+    <tr>
+        <td>13.</td>
+        <td>FARMASI</td>
+    </tr>
+    <tr>
+        <td>14.</td>
+        <td>PSIKOLOGI</td>
+    </tr>
+    <tr>
+        <td>15.</td>
+        <td>FAPET</td>
+    </tr>
+    <tr>
+        <td>16.</td>
+        <td>BIOLOGI</td>
+    </tr>
+    <tr>
+        <td>17.</td>
+        <td>FTP</td>
+    </tr>
+    <tr>
+        <td>18.</td>
+        <td>GEOGRAFI</td>
+    </tr>
+    <tr>
+        <td>19.</td>
+        <td>Sekolah Pascasarjana</td>
+    </tr>
+    <tr>
+        <td>20.</td>
+        <td>GSP</td>
+    </tr>
+    <tr>
+        <td>21.</td>
+        <td>Perpustakaan</td>
+    </tr>
+    <tr>
+        <td>22.</td>
+        <td>Wisdom Park</td>
+    </tr>
+    <tr>
+        <td>23.</td>
+        <td>Masjid Kampus</td>
+    </tr>
+    <tr>
+        <td>24.</td>
+        <td>Museum UGM</td>
+    </tr>
+    <tr>
+        <td>25.</td>
+        <td>GOR Lembah</td>
+    </tr>
+    <tr>
+        <td>26.</td>
+        <td>Stadion Pancasila</td>
+    </tr>
+    <tr>
+        <td>27.</td>
+        <td>HUKUM</td>
+    </tr>
+    <tr>
+        <td>28.</td>
+        <td>PUJALE</td>
+    </tr>
+
+    <tr>
+        <td>29.</td>
+        <td>TILC</td>
+    </tr>
+
+    <tr>
+        <td>30.</td>
+        <td>SGLC</td>
+    </tr>
+    </table>
+
+</table>
+    </body>
+</html>

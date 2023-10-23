@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Persebaran Gunung di Indonesia</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v3.20.1/css/ol.css" type="text/css" />
+    <!-- The line below is only needed for old environments like Internet
+    Explorer and Android 4.x -->
+    <script
+        src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"
+    ></script>
+    <script src="https://openlayers.org/en/v3.20.1/build/ol.js"></script>
+    <style>
+        #map:focus {
+            outline: #95bbdf solid 0.15em;
+        }
+        #map {
+            width: 100%;
+            height: 450px;
+        }
+        body {
+    background-color: rgba(241, 239, 220, 0.553);}
+
+    </style>
+</head>
+<body>
+    
+    <h2>Persebaran Gunung di Indonesia</h2>
+    <p>Oleh: Maureen Arsa Sanda Cantika</p>
+        
+    <div id="map" class="map" tabindex="0"></div>
+    <button id="zoom-out">Zoom out</button>
+    <button id="zoom-in">Zoom in</button>
+    <button id="add-polygon">Polygon</button>
+    <button id="clear-features">Clear Polygon</button>
+    <script>
+        var map = new ol.Map({
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM(),
+                }),
+            ],
+            target: 'map',
+            controls: ol.control.defaults({
+                attributionOptions: {
+                    collapsible: false,
+                },
+            }),
+            view: new ol.View({
+                center: ol.proj.transform([110, -7], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 9,
+            }),
+        });
+
+        document.getElementById('zoom-out').onclick = function () {
+            var view = map.getView();
+            var zoom = view.getZoom();
+            console.log('Debug zoom out: ' + zoom);
+            view.setZoom(zoom - 1);
+        };
+
+        document.getElementById('zoom-in').onclick = function () {
+            var view = map.getView();
+            var zoom = view.getZoom();
+            console.log('Debug zoom in: ' + zoom);
+            view.setZoom(zoom + 1);
+        };
+
+        var iconCoordinates = [
+            [110.44569335581973, -7.538633838325391],
+            [110.44012295364375, -7.454766754535809],
+            [110.07286066467707, -7.381686672163845],
+            [109.9954771867112, -7.299508647135139],
+            [110.34785282804401, -7.181693425844327],
+            [112.953504, -7.942493],
+            [110.37018726937849, -7.343874202471276],
+            [109.88847760097418, -7.24473335168642],
+            [109.87398846497432, -7.209349269074626],
+            [109.89461440054993, -7.189739757041017],
+            [109.87027823538527, -7.186504886686793],
+            [109.82875085855738, -7.193782450636512],
+            [109.21976619445738, -7.235262286103197],
+            [108.40694486097753, -6.891614150995968],
+            [107.86022516695257, -7.321356078343914],
+            [106.45940616131541, -6.710942625788064],
+            [106.98204864238892, -6.7868624665449],
+            [114.04419481035616, -8.119845881519332],
+            [114.36208843397203, -7.843397602696976],
+            [113.56858856435811, -7.941237364685512],
+            [112.31371686975703, -7.934149253182773],
+            [111.76100243615932, -7.796052891410331],
+            [110.8904896069416, -6.61453454593927],
+            [111.19356541598128, -7.6255427187789495],
+            [116.39443113931351, -8.425018364671999],
+            [115.50823740077936, -8.337891551843676]
+            
+        ];
+
+        var iconSource = new ol.source.Vector();
+        var iconLayer = new ol.layer.Vector({
+            source: iconSource,
+        });
+
+        map.addLayer(iconLayer);
+
+        iconCoordinates.forEach(function (coordinate) {
+            var point = new ol.geom.Point(ol.proj.transform(coordinate, 'EPSG:4326', 'EPSG:3857'));
+            var feature = new ol.Feature({
+                geometry: point,
+            });
+
+            feature.setStyle(
+                new ol.style.Style({
+                    image: new ol.style.Icon({
+                        src: 'https://cdn-icons-png.flaticon.com/128/5364/5364119.png',
+                        scale: 0.3,
+                        anchor: [0.5, 1],
+                    }),
+                })
+            );
+
+            iconSource.addFeature(feature);
+        });
+
+        var draw;
+        var polygonSource = new ol.source.Vector();
+        var polygonLayer = new ol.layer.Vector({
+            source: polygonSource,
+        });
+
+        map.addLayer(polygonLayer);
+
+        document.getElementById('add-polygon').onclick = function () {
+            map.removeInteraction(draw);
+            draw = new ol.interaction.Draw({
+                source: polygonSource,
+                type: 'Polygon',
+            });
+            map.addInteraction(draw);
+        };
+
+        document.getElementById('clear-features').onclick = function () {
+            polygonSource.clear();
+        };
+
+    
+    </script>
+
+    <h4>Keterangan:</h4>
+        <table border="1">
+    <tr>
+        <th>No.</th>
+        <th>Nama Gunung</th>
+    </tr>
+    <tr>
+        <td>1.</td>
+        <td>Gunung Merapi</td>
+    </tr>
+    <tr>
+        <td>2.</td>
+        <td>Gunung Merbabu</td>
+    </tr>
+    <tr>
+        <td>3.</td>
+        <td>Gunung Halimun</td>
+    </tr>
+    <tr>
+        <td>4.</td>
+        <td>Gunung Gede</td>
+    </tr>
+    <tr>
+        <td>5.</td>
+        <td>Gunung Cikuray</td>
+    </tr>
+    <tr>
+        <td>6.</td>
+        <td>Gunung Cereme</td>
+    </tr>
+    <tr>
+        <td>7.</td>
+        <td>Gunung Slamet</td>
+    </tr>
+    <tr>
+        <td>8.</td>
+        <td>Gunung Petarangan</td>
+    </tr>
+    <tr>
+        <td>9.</td>
+        <td>Gunung Pangamunamun</td>
+    </tr>
+    <tr>
+        <td>10.</td>
+        <td>Gunung Nagasari</td>
+    </tr>
+    <tr>
+        <td>11.</td>
+        <td>Gunung Sipandu</td>
+    </tr>
+    <tr>
+        <td>12.</td>
+        <td>Gunung Bisma</td>
+    </tr>
+    <tr>
+        <td>13.</td>
+        <td>Gunung Sindoro</td>
+    </tr>
+    <tr>
+        <td>14.</td>
+        <td>Gunung Sumbing</td>
+    </tr>
+    <tr>
+        <td>15.</td>
+        <td>Gunung Ungaran</td>
+    </tr>
+    <tr>
+        <td>16.</td>
+        <td>Gunung Gilipetung</td>
+    </tr>
+    <tr>
+        <td>17.</td>
+        <td>Gunung Merbabu</td>
+    </tr>
+    <tr>
+        <td>18.</td>
+        <td>Gunung Muria</td>
+    </tr>
+    <tr>
+        <td>19.</td>
+        <td>Gunung Lawu</td>
+    </tr>
+    <tr>
+        <td>20.</td>
+        <td>Gunung Liman</td>
+    </tr>
+    <tr>
+        <td>21.</td>
+        <td>Gunung Kelud</td>
+    </tr>
+    <tr>
+        <td>22.</td>
+        <td>Gunung Bromo</td>
+    </tr>
+    <tr>
+        <td>23.</td>
+        <td>Gunung Argopuro</td>
+    </tr>
+    <tr>
+        <td>24.</td>
+        <td>Gunung Raung</td>
+    </tr>
+    <tr>
+        <td>25.</td>
+        <td>Gunung Baluran</td>
+    </tr>
+    <tr>
+        <td>26.</td>
+        <td>Gunung Agung</td>
+    </tr>
+    <tr>
+        <td>27.</td>
+        <td>Gunung Rinjani</td>
+    </tr>
+
+    </table>
+</body>
+</html>
